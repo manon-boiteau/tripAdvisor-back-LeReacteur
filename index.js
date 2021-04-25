@@ -1,6 +1,7 @@
 const express = require("express");
 const formidable = require("express-formidable");
 const cors = require("cors");
+require("dotenv").config();
 
 const app = express();
 app.use(formidable());
@@ -10,6 +11,10 @@ app.use(cors());
 const api_key = process.env.MAILGUN_API_KEY;
 const domain = process.env.MAILGUN_DOMAIN;
 const mailgun = require("mailgun-js")({ apiKey: api_key, domain: domain });
+
+app.get("/", (req, res) => {
+  res.status(200).json({ message: "Welcome to TripAdvisor by Manon !" });
+});
 
 app.post("/form", (req, res) => {
   try {
@@ -41,6 +46,6 @@ app.all("*", (req, res) => {
   res.status(404).json({ message: "This endpoint does not exist." });
 });
 
-app.listen(process.env.PORT, () => {
+app.listen(process.env.PORT || 3000, () => {
   console.log("Go go goo server 🐣");
 });
